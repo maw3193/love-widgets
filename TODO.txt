@@ -1,0 +1,17 @@
+TODO list and design doc
+===
+
+Purpose
+---
+
+This repo is for fiddling around with love2d to put together various gui elements to be used with other projects.
+
+Todo items
+---
+
+* Resizable Window
+  * Resize Button - Press determines what happens when you release
+  * Generic Window
+    * draggable panels
+    * clickable buttons
+    * Text box for title
