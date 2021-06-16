@@ -6,6 +6,7 @@ local Widget = require("widgets/widget")
 Frame = {
     __name = "Frame",
     __theme = Theme.frame,
+    text = nil,
 }
 
 -- XXX: Won't cause confusion so long as I never get functions in Theme.
@@ -29,6 +30,10 @@ function Frame.draw(self)
     love.graphics.rectangle("fill", 0, 0, self.w, self.h)
     love.graphics.setColor(self.line)
     love.graphics.rectangle("line", 0, 0, self.w, self.h)
+    if self.text then
+        love.graphics.setColor(self.text_color)
+        love.graphics.printf(self.text, self.x, self.y, self.w, "center")
+    end
     love.graphics.pop()
 end
 

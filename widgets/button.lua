@@ -6,6 +6,7 @@ local Button = {
     __name = "Button",
     __theme = Theme.button,
     pressed = false,
+    text = nil,
 }
 
 setmetatable(Button, Widget)
@@ -42,6 +43,10 @@ function Button.draw(self)
     love.graphics.rectangle("fill", 0, 0, self.w, self.h)
     love.graphics.setColor(self.line)
     love.graphics.rectangle("line", 0, 0, self.w, self.h)
+    if self.text then
+        love.graphics.setColor(self.text_color)
+        love.graphics.printf(self.text, self.x, self.y, self.w, "center")
+    end
     love.graphics.pop()
 end
 

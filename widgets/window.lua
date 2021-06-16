@@ -10,12 +10,25 @@ local Button = require("widgets/button")
 local Window = {
     __name = "Window",
     __theme = Theme.window,
+    grabbed = false,
+    grab_offset_x = nil,
+    grab_offset_y = nil,
+    title = nil, -- the name of the window
 }
 
 setmetatable(Window, WidgetContainer)
 
 function Window.__index(table, key)
     return Window.__theme[key] or Window[key] or (getmetatable(Window) or {})[key]
+end
+
+function Window.update(self, dt)
+    if self.grabbed then
+        local posx,posy = love.mouse.getPosition()
+        self.x = posx - self.grab_offset_x
+        self.y = posy - self.grab_offset_y
+    end
+    WidgetContainer.update(self, dt)
 end
 
 function Window.Window(obj)
@@ -29,6 +42,24 @@ function Window.Window(obj)
         self.parent_widget:kill()
     end
     obj:add(close_button)
+    
+    local title_bar = Button.Button{
+        text=obj.title or obj.__name,
+        x=0,
+        y=0,
+        w=obj.w - close_button.w,
+        onPressed = function(self)
+            local posx,posy = love.mouse.getPosition()
+            self.parent_widget.grab_offset_x = posx - self.parent_widget.x
+            self.parent_widget.grab_offset_y = posy - self.parent_widget.y
+            self.parent_widget.grabbed = true
+        end,
+        onReleased = function(self)
+            self.parent_widget.grabbed = false
+        end,
+    }
+    title_bar.fill = title_bar.pressed_fill
+    obj:add(title_bar)
 
     return obj
 end

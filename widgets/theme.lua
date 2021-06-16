@@ -10,6 +10,7 @@ Theme = {
         h = 200,
         fill = Color.white,
         line = Color.grey,
+        text_color = Color.white,
     },
     button = {
         x = 0,
@@ -19,6 +20,7 @@ Theme = {
         fill = Color.white,
         pressed_fill = Color.grey,
         line = Color.grey,
+        text_color = Color.white,
     },
     window = {
         x = 0,
