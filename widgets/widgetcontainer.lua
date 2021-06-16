@@ -19,6 +19,7 @@ function WidgetContainer.__index(table, key)
 end
 
 function WidgetContainer.add(self, widget)
+    widget.parent_widget = self
     table.insert(self.__subwidgets, widget)
 end
 
@@ -26,6 +27,10 @@ function WidgetContainer.subwidgets(self)
     local index = 1
     return function()
         local widget = self.__subwidgets[index]
+        if widget and widget.__dead then
+            table.remove(self.__subwidgets, index)
+            widget = self.__subwidgets[index]
+        end
         index = index + 1
         return widget
     end
@@ -51,6 +56,14 @@ end
 function WidgetContainer.draw(self)
     love.graphics.push()
     love.graphics.translate(self.x, self.y)
+    if self.fill then
+        love.graphics.setColor(self.fill)
+        love.graphics.rectangle("fill", 0, 0, self.w, self.h)
+    end
+    if self.line then
+        love.graphics.setColor(self.line)
+        love.graphics.rectangle("line", 0, 0, self.w, self.h)
+    end
     for widget in self:subwidgets() do
         if widget.draw then
             widget:draw()

@@ -4,6 +4,7 @@ local Widgets = {
     Frame = require("widgets/frame").Frame,
     Button = require("widgets/button").Button,
     WidgetContainer = require("widgets/widgetcontainer").WidgetContainer,
+    Window = require("widgets/window").Window,
 }
 
 return Widgets

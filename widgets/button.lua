@@ -26,11 +26,9 @@ function Button.mousereleased(self, x, y, button, istouch, presses)
 end
 
 function Button.onPressed(self)
-    print("Button pressed!")
 end
 
 function Button.onReleased(self)
-    print("Button released!")
 end
 
 function Button.draw(self)
@@ -48,6 +46,7 @@ function Button.draw(self)
 end
 
 function Button.Button(obj)
+    obj = obj or {}
     setmetatable(obj, Button)
     return obj
 end

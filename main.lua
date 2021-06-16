@@ -4,9 +4,9 @@ local widgets = Widgets.WidgetContainer{x=32, y=32}
 
 function love.load()
     love.window.setTitle("Widget Toolbox")
-    for k,v in pairs(widgets) do print(k,v) end
-    widgets:add(Widgets.Frame{x=0, y=0, w=300, h=200})
-    widgets:add(Widgets.Button{x=0,y=200,w=32,h=32})
+    widgets:add(Widgets.Window())
+--    widgets:add(Widgets.Frame{x=0, y=0, w=300, h=200})
+--    widgets:add(Widgets.Button{x=0,y=200,w=32,h=32})
 end
 
 function love.update(dt)

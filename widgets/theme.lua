@@ -20,6 +20,14 @@ Theme = {
         pressed_fill = Color.grey,
         line = Color.grey,
     },
+    window = {
+        x = 0,
+        y = 0,
+        w = 400,
+        h = 300,
+        fill = Color.white,
+        line = Color.grey,
+    },
 }
 
 function Theme.__index(table, key)
