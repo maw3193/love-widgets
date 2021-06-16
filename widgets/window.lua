@@ -5,7 +5,8 @@ local Button = require("widgets/button")
 
 -- A Window is a widget container with some special logic in it.
 -- It has a frame at the very back and a "close" button
--- Later, it will have a draggable title bar
+-- Plus, it has a draggable title bar
+-- Some day, it will be resizable with a button at the bottom-right corner.
 
 local Window = {
     __name = "Window",

@@ -15,3 +15,4 @@ Todo items
     * draggable panels
     * clickable buttons
     * Text box for title
+* Should the last-interacted-with window be brought to the top?
