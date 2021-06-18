@@ -17,9 +17,9 @@ Theme = {
         y = 0,
         w = 16,
         h = 16,
-        fill = Color.white,
-        pressed_fill = Color.grey,
-        line = Color.grey,
+        fill = Color.grey,
+        pressed_fill = Color.dark_grey,
+        line = Color.white,
         text_color = Color.white,
     },
     window = {
@@ -27,8 +27,8 @@ Theme = {
         y = 0,
         w = 400,
         h = 300,
-        fill = Color.white,
-        line = Color.grey,
+        fill = Color.grey,
+        line = Color.white,
     },
 }
 

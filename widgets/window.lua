@@ -36,12 +36,14 @@ function Window.Window(obj)
     obj = WidgetContainer.WidgetContainer(obj)
     setmetatable(obj, Window)
 
-    local close_button = Button.Button()
+    local close_button = Button.Button{
+        text = "X",
+        onReleased = function(self)
+            self.parent_widget:kill()
+        end,
+    }
     close_button.x = obj.w - close_button.w
     close_button.y = 0
-    close_button.onReleased = function(self)
-        self.parent_widget:kill()
-    end
     obj:add(close_button)
     
     local title_bar = Button.Button{

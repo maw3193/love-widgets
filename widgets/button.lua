@@ -22,7 +22,7 @@ function Button.mousepressed(self, x, y, button, istouch, presses)
 end
 
 function Button.mousereleased(self, x, y, button, istouch, presses)
-     self:onReleased()
+    self:onReleased()
     self.pressed = false
 end
 
@@ -45,7 +45,7 @@ function Button.draw(self)
     love.graphics.rectangle("line", 0, 0, self.w, self.h)
     if self.text then
         love.graphics.setColor(self.text_color)
-        love.graphics.printf(self.text, self.x, self.y, self.w, "center")
+        love.graphics.printf(self.text, 0, 0, self.w, "center")
     end
     love.graphics.pop()
 end
