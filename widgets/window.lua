@@ -7,6 +7,12 @@ local Button = require("widgets/button")
 -- It has a frame at the very back and a "close" button
 -- Plus, it has a draggable title bar
 -- Some day, it will be resizable with a button at the bottom-right corner.
+-- How does resizing work?
+--- There is a resize button which will resize the window by clicking and dragging, rendering an outline.
+--- Drawing an outline while pressed is easy.
+--- Resizing on release when the cursor outside the button is harder. Override the parent widget's onRelease.
+--- Resizing the window means repositioning a bunch of widgets.
+--- Let every widget have a resize method, widgetcontainers implement it differently to windows.
 
 local Window = {
     __name = "Window",
