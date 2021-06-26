@@ -6,6 +6,7 @@ local Widget = {
     __name = "Widget",
     __dead = false, -- parent widget should remove this ASAP
     parent_widget = nil, -- lua promises that it can handle cyclical data structures
+    rearrange_exempt = false, -- ignore this widget when widget containers rearrange subwidgets
     x = 0,
     y = 0,
     w = 16,
@@ -18,6 +19,11 @@ end
 
 function Widget.kill(self)
     self.__dead = true
+end
+
+function Widget.resize(self, width, height)
+    self.w = width
+    self.h = height
 end
 
 return Widget

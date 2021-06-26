@@ -2,6 +2,12 @@
 
 local widget = require("widgets/widget")
 
+local WidgetArrangeMode = {
+    HORIZONTAL = "horizontal",
+    VERTICAL = "vertical",
+    NONE = "none",
+}
+
 -- A container of widgets that supports various methods that get applied to all subwidgets.
 -- Subwidgets are added bottom-up, the latest ones are drawn last and checked for clicks first
 local WidgetContainer = {
@@ -10,7 +16,9 @@ local WidgetContainer = {
     x = 0,
     y = 0,
     w = 800,
-    h = 600}
+    h = 600,
+    arrange_mode = WidgetArrangeMode.NONE,
+}
 
 setmetatable(WidgetContainer, widget)
 
@@ -96,6 +104,58 @@ function WidgetContainer.mousereleased(self, x, y, button, istouch, presses)
             end
         end
     end
+end
+
+function WidgetContainer.rearrangeSubwidgets(self)
+    if self.arrange_mode == WidgetArrangeMode.HORIZONTAL then
+        local px = 0
+        local py = 0
+        local tallestHeight = 0
+        for widget in self:subwidgets() do
+            if not widget.rearrange_exempt then
+                if px + widget.w > self.w then -- widget would go off the side, new row.
+                    px = 0
+                    py = py + tallestHeight
+                    tallestHeight = 0
+                end
+                widget.x = px
+                widget.y = py
+                px = px + widget.w
+                if widget.h > tallestHeight then
+                    tallestHeight = widget.h
+                end
+            end
+        end
+    elseif self.arrange_mode == WidgetArrangeMode.VERTICAL then
+        local px = 0
+        local py = 0
+        local widestWidth = 0
+        for widget in self:subwidgets() do
+            if not widget.rearrange_exempt then
+                if py + widget.h > self.h then -- widget woud go off the bottom, new column.
+                    py = 0
+                    px = px + widestWidth
+                    widestWidth = 0
+                end
+                widget.x = px
+                widget.y = py
+                py = py + widget.h
+                if widget.w > widestWidth then
+                    widestWidth = widget.w
+                end
+            end
+        end
+    elseif self.arrange_mode == WidgetArrangeMode.NONE then
+    else
+        print(self, "Widget container tried to rearrange subwidgets with unexpected arrange mode '" .. self.arrange_mode .. "'")
+        os.exit(1)
+    end
+end
+
+function WidgetContainer.resize(self, width, height)
+    self.w = width
+    self.h = height
+    self:rearrangeSubwidgets()
 end
 
 function WidgetContainer.WidgetContainer(obj, subwidgets)
