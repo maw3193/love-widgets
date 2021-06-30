@@ -11,8 +11,8 @@ local Button = require("widgets/button")
 --- There is a resize button which will resize the window by clicking and dragging, rendering an outline.
 --- Drawing an outline while pressed is easy.
 --- Resizing on release when the cursor outside the button is harder. Override the parent widget's onRelease.
---- Resizing the window means repositioning a bunch of widgets.
---- Let every widget have a resize method, widgetcontainers implement it differently to windows.
+--- Resizing the window means repositioning a bunch of widgets. DONE
+--- Let every widget have a resize method, widgetcontainers implement it differently to windows. DONE
 
 local Window = {
     __name = "Window",
@@ -21,6 +21,8 @@ local Window = {
     grab_offset_x = nil,
     grab_offset_y = nil,
     title = nil, -- the name of the window
+    close_button = nil, -- reference to the close button for affecting specifically
+    title_bar = nil, -- reference to the title bar for affecting specifically
 }
 
 setmetatable(Window, WidgetContainer)
@@ -38,25 +40,31 @@ function Window.update(self, dt)
     WidgetContainer.update(self, dt)
 end
 
-function Window.Window(obj)
-    obj = WidgetContainer.WidgetContainer(obj)
+function Window.resize(self, width, height)
+    WidgetContainer.resize(self, width, height)
+    self.title_bar.w = self.w - self.close_button.w
+    self.close_button.x = self.w - self.close_button.w
+end
+
+function Window.Window(obj, subwidgets)
+    obj = WidgetContainer.WidgetContainer(obj, subwidgets)
     setmetatable(obj, Window)
 
-    local close_button = Button.Button{
+    obj.close_button = Button.Button{
+        y = 0,
+        rearrange_exempt = true,
         text = "X",
         onReleased = function(self)
             self.parent_widget:kill()
         end,
     }
-    close_button.x = obj.w - close_button.w
-    close_button.y = 0
-    obj:add(close_button)
+    obj:add(obj.close_button)
     
-    local title_bar = Button.Button{
+    obj.title_bar = Button.Button{
+        rearrange_exempt = true,
         text=obj.title or obj.__name,
         x=0,
         y=0,
-        w=obj.w - close_button.w,
         onPressed = function(self)
             local posx,posy = love.mouse.getPosition()
             self.parent_widget.grab_offset_x = posx - self.parent_widget.x
@@ -67,9 +75,11 @@ function Window.Window(obj)
             self.parent_widget.grabbed = false
         end,
     }
-    title_bar.fill = title_bar.pressed_fill
-    obj:add(title_bar)
-
+    obj.title_bar.fill = obj.title_bar.pressed_fill
+    obj:add(obj.title_bar)
+    obj.top_pad = obj.title_bar.h
+    obj:resize(obj.w, obj.h)
+    --print("New Window padding:", obj.top_pad, obj.left_pad, obj.right_pad, obj.bottom_pad)
     return obj
 end
 

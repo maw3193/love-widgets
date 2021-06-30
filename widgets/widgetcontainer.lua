@@ -17,6 +17,10 @@ local WidgetContainer = {
     y = 0,
     w = 800,
     h = 600,
+    top_pad = 0, --when arranging, start this many pixels from the topmost edge
+    left_pad = 0,
+    right_pad = 0,
+    bottom_pad = 0,
     arrange_mode = WidgetArrangeMode.NONE,
 }
 
@@ -107,14 +111,15 @@ function WidgetContainer.mousereleased(self, x, y, button, istouch, presses)
 end
 
 function WidgetContainer.rearrangeSubwidgets(self)
+    --print("Widget Container padding:", self.top_pad, self.left_pad, self.right_pad, self.bottom_pad)
     if self.arrange_mode == WidgetArrangeMode.HORIZONTAL then
-        local px = 0
-        local py = 0
+        local px = self.left_pad
+        local py = self.top_pad
         local tallestHeight = 0
         for widget in self:subwidgets() do
             if not widget.rearrange_exempt then
-                if px + widget.w > self.w then -- widget would go off the side, new row.
-                    px = 0
+                if px + widget.w > self.w - self.right_pad then -- widget would go off the side, new row.
+                    px = self.left_pad
                     py = py + tallestHeight
                     tallestHeight = 0
                 end
@@ -127,13 +132,13 @@ function WidgetContainer.rearrangeSubwidgets(self)
             end
         end
     elseif self.arrange_mode == WidgetArrangeMode.VERTICAL then
-        local px = 0
-        local py = 0
+        local px = self.left_pad
+        local py = self.top_pad
         local widestWidth = 0
         for widget in self:subwidgets() do
             if not widget.rearrange_exempt then
-                if py + widget.h > self.h then -- widget woud go off the bottom, new column.
-                    py = 0
+                if py + widget.h > self.h - self.bottom_pad then -- widget woud go off the bottom, new column.
+                    py = self.top_pad
                     px = px + widestWidth
                     widestWidth = 0
                 end
@@ -162,11 +167,12 @@ function WidgetContainer.WidgetContainer(obj, subwidgets)
     if not obj then
         obj = {}
     end
-    if not subwidgets then
-        subwidgets = {}
-    end
-    obj.__subwidgets = subwidgets
+    obj.__subwidgets = {}
     setmetatable(obj, WidgetContainer)
+    for _,widget in ipairs(subwidgets or {}) do
+        obj:add(widget)
+    end
+    obj:rearrangeSubwidgets()
     return obj
 end
 
