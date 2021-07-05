@@ -13,6 +13,7 @@ local WidgetArrangeMode = {
 local WidgetContainer = {
     __name = "WidgetContainer",
     __subwidgets = nil,
+    __mousereleased_override = nil,
     x = 0,
     y = 0,
     w = 800,
@@ -101,10 +102,14 @@ function WidgetContainer.mousereleased(self, x, y, button, istouch, presses)
     if self:isPointInside(x, y) then
         local subx = x - self.x
         local suby = y - self.y
-        for widget in self:reverseSubwidgets() do
-            if widget:isPointInside(subx, suby) and widget.mousereleased then
-                widget:mousereleased(subx, suby, button, istouch, presses)
-                break
+        if self.__mousereleased_override then
+            self:__mousereleased_override(x, y, button, istouch, presses)
+        else
+            for widget in self:reverseSubwidgets() do
+                if widget:isPointInside(subx, suby) and widget.mousereleased then
+                    widget:mousereleased(subx, suby, button, istouch, presses)
+                    break
+                end
             end
         end
     end

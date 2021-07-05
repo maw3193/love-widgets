@@ -26,4 +26,15 @@ function Widget.resize(self, width, height)
     self.h = height
 end
 
+function Widget.getScreenPosition(self)
+    local x = 0
+    local y = 0
+    if self.parent_widget then
+        x, y = self.parent_widget:getScreenPosition()
+    end
+    x = x + self.x
+    y = y + self.y
+    return x, y
+end
+
 return Widget

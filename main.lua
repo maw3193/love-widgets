@@ -4,6 +4,7 @@ local widgets = Widgets.WidgetContainer{x=0, y=0, arrange_mode="horizontal"}
 
 function love.load()
     love.window.setTitle("Widget Toolbox")
+    love.graphics.setNewFont("unifont-13.0.06.ttf")
     widgets:add(Widgets.Button{
         x = 0,
         y = 0,

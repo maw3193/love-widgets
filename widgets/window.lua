@@ -6,13 +6,8 @@ local Button = require("widgets/button")
 -- A Window is a widget container with some special logic in it.
 -- It has a frame at the very back and a "close" button
 -- Plus, it has a draggable title bar
--- Some day, it will be resizable with a button at the bottom-right corner.
--- How does resizing work?
---- There is a resize button which will resize the window by clicking and dragging, rendering an outline.
---- Drawing an outline while pressed is easy.
---- Resizing on release when the cursor outside the button is harder. Override the parent widget's onRelease.
---- Resizing the window means repositioning a bunch of widgets. DONE
---- Let every widget have a resize method, widgetcontainers implement it differently to windows. DONE
+-- And, it's resizable with a button at the bottom-right corner.
+
 
 local Window = {
     __name = "Window",
@@ -23,12 +18,42 @@ local Window = {
     title = nil, -- the name of the window
     close_button = nil, -- reference to the close button for affecting specifically
     title_bar = nil, -- reference to the title bar for affecting specifically
+    reise_button = nil,
+    resize_offset_x = nil,
+    resize_offset_y = nil,
 }
 
 setmetatable(Window, WidgetContainer)
 
 function Window.__index(table, key)
     return Window.__theme[key] or Window[key] or (getmetatable(Window) or {})[key]
+end
+
+function Window.draw(self)
+    love.graphics.push()
+    love.graphics.translate(self.x, self.y)
+    if self.fill then
+        love.graphics.setColor(self.fill)
+        love.graphics.rectangle("fill", 0, 0, self.w, self.h)
+    end
+    if self.line then
+        love.graphics.setColor(self.line)
+        love.graphics.rectangle("line", 0, 0, self.w, self.h)
+    end
+    for widget in self:subwidgets() do
+        if widget.draw then
+            widget:draw()
+        end
+    end
+    -- Draw a rectangle from the top-left corner to the cursor location, but how do I get the cursor location in graphics-stack-local coords?
+    if self.resize_button.pressed then
+        local mouseX, mouseY = love.mouse.getPosition()
+        local screenX, screenY = self:getScreenPosition()
+        -- because of love.graphics.translate, the mouse position is not useful coords to draw yet.
+        love.graphics.setColor(self.line)
+        love.graphics.rectangle("line", 0, 0, mouseX - screenX + self.resize_offset_x, mouseY - screenY + self.resize_offset_y)
+    end
+    love.graphics.pop()
 end
 
 function Window.update(self, dt)
@@ -44,6 +69,8 @@ function Window.resize(self, width, height)
     WidgetContainer.resize(self, width, height)
     self.title_bar.w = self.w - self.close_button.w
     self.close_button.x = self.w - self.close_button.w
+    self.resize_button.x = self.w - self.resize_button.w
+    self.resize_button.y = self.h - self.resize_button.h
 end
 
 function Window.Window(obj, subwidgets)
@@ -78,6 +105,27 @@ function Window.Window(obj, subwidgets)
     obj.title_bar.fill = obj.title_bar.pressed_fill
     obj:add(obj.title_bar)
     obj.top_pad = obj.title_bar.h
+
+    obj.resize_button = Button.Button{
+        rearrange_exempt = true,
+        text = "⇲",
+        onPressed = function(self, x, y)
+            local button = self
+            local window = button.parent_widget
+            window.resize_offset_x = self.w - x
+            window.resize_offset_y = self.h - y
+            window.parent_widget.__mousereleased_override = function(self, x, y)
+                window:resize(x - window.x + window.resize_offset_x,
+                              y - window.y + window.resize_offset_y)
+                window.parent_widget.__mousereleased_override = nil
+                button.pressed = false
+            end
+        end,
+    }
+    obj:add(obj.resize_button)
+    obj.right_pad = obj.resize_button.w
+    obj.bottom_pad = obj.resize_button.h
+
     obj:resize(obj.w, obj.h)
     --print("New Window padding:", obj.top_pad, obj.left_pad, obj.right_pad, obj.bottom_pad)
     return obj

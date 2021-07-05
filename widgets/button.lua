@@ -16,20 +16,22 @@ function Button.__index(table, key)
 end
 
 function Button.mousepressed(self, x, y, button, istouch, presses)
-    -- These buttons are binary pressed/released. anything will do.
-    self:onPressed()
+    local subx = x - self.x
+    local suby = y - self.y
+    --print("Button pressed at", subx, suby)
+    self:onPressed(subx, suby)
     self.pressed = true
 end
 
 function Button.mousereleased(self, x, y, button, istouch, presses)
-    self:onReleased()
+    self:onReleased(x - self.x, y - self.y)
     self.pressed = false
 end
 
-function Button.onPressed(self)
+function Button.onPressed(self, x, y)
 end
 
-function Button.onReleased(self)
+function Button.onReleased(self, x, y)
 end
 
 function Button.draw(self)
