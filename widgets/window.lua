@@ -30,22 +30,7 @@ function Window.__index(table, key)
 end
 
 function Window.draw(self)
-    love.graphics.push()
-    love.graphics.translate(self.x, self.y)
-    if self.fill then
-        love.graphics.setColor(self.fill)
-        love.graphics.rectangle("fill", 0, 0, self.w, self.h)
-    end
-    if self.line then
-        love.graphics.setColor(self.line)
-        love.graphics.rectangle("line", 0, 0, self.w, self.h)
-    end
-    for widget in self:subwidgets() do
-        if widget.draw then
-            widget:draw()
-        end
-    end
-    -- Draw a rectangle from the top-left corner to the cursor location, but how do I get the cursor location in graphics-stack-local coords?
+    WidgetContainer.draw(self)
     if self.resize_button.pressed then
         local mouseX, mouseY = love.mouse.getPosition()
         local screenX, screenY = self:getScreenPosition()
@@ -53,7 +38,6 @@ function Window.draw(self)
         love.graphics.setColor(self.line)
         love.graphics.rectangle("line", 0, 0, mouseX - screenX + self.resize_offset_x, mouseY - screenY + self.resize_offset_y)
     end
-    love.graphics.pop()
 end
 
 function Window.update(self, dt)

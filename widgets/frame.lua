@@ -24,8 +24,6 @@ function Frame.__index(table, key)
 end
 
 function Frame.draw(self)
-    love.graphics.push()
-    love.graphics.translate(self.x, self.y)
     love.graphics.setColor(self.fill)
     love.graphics.rectangle("fill", 0, 0, self.w, self.h)
     love.graphics.setColor(self.line)
@@ -34,7 +32,6 @@ function Frame.draw(self)
         love.graphics.setColor(self.text_color)
         love.graphics.printf(self.text, self.x, self.y, self.w, "center")
     end
-    love.graphics.pop()
 end
 
 function Frame.Frame(obj)

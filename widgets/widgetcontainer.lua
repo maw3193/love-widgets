@@ -67,8 +67,6 @@ function WidgetContainer.update(self, dt)
 end
 
 function WidgetContainer.draw(self)
-    love.graphics.push()
-    love.graphics.translate(self.x, self.y)
     if self.fill then
         love.graphics.setColor(self.fill)
         love.graphics.rectangle("fill", 0, 0, self.w, self.h)
@@ -79,10 +77,11 @@ function WidgetContainer.draw(self)
     end
     for widget in self:subwidgets() do
         if widget.draw then
+            widget:preDraw()
             widget:draw()
+            widget:postDraw()
         end
     end
-    love.graphics.pop()
 end
 
 function WidgetContainer.mousepressed(self, x, y, button, istouch, presses)

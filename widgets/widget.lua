@@ -26,6 +26,15 @@ function Widget.resize(self, width, height)
     self.h = height
 end
 
+function Widget.preDraw(self)
+    love.graphics.push()
+    love.graphics.translate(self.x, self.y)
+end
+
+function Widget.postDraw(self)
+    love.graphics.pop()
+end
+
 function Widget.getScreenPosition(self)
     local x = 0
     local y = 0

@@ -11,6 +11,7 @@ Theme = {
         fill = Color.white,
         line = Color.grey,
         text_color = Color.white,
+        use_stencil = false,
     },
     button = {
         x = 0,
@@ -21,6 +22,7 @@ Theme = {
         pressed_fill = Color.dark_grey,
         line = Color.white,
         text_color = Color.white,
+        use_stencil = false,
     },
     window = {
         x = 0,
@@ -29,6 +31,7 @@ Theme = {
         h = 300,
         fill = Color.grey,
         line = Color.white,
+        use_stencil = true,
     },
 }
 

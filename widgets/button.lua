@@ -35,8 +35,6 @@ function Button.onReleased(self, x, y)
 end
 
 function Button.draw(self)
-    love.graphics.push()
-    love.graphics.translate(self.x, self.y)
     if self.pressed then
         love.graphics.setColor(self.pressed_fill)
     else
@@ -49,7 +47,6 @@ function Button.draw(self)
         love.graphics.setColor(self.text_color)
         love.graphics.printf(self.text, 0, 0, self.w, "center")
     end
-    love.graphics.pop()
 end
 
 function Button.Button(obj)

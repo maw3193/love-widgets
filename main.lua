@@ -85,7 +85,9 @@ function love.update(dt)
 end
 
 function love.draw()
+    widgets:preDraw()
     widgets:draw()
+    widgets:postDraw()
 end
 
 function love.mousepressed(x, y, button, istouch, presses)
