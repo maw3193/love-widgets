@@ -5,18 +5,27 @@ local widgets = Widgets.WidgetContainer{x=0, y=0, arrange_mode="horizontal"}
 function love.load()
     love.window.setTitle("Widget Toolbox")
     love.graphics.setNewFont("unifont-13.0.06.ttf")
-    widgets:add(Widgets.Button{
+
+    local main_window = Widgets.Window{
         x = 0,
         y = 0,
-        w = 48,
-        h = 48,
-        text = "New Window",
-        rearrange_exempt = true,
+        w = 800,
+        h = 600,
+        title = "Main Window",
+        arrange_mode = "horizontal"
+    }
+    widgets:add(main_window)
+    main_window:add(Widgets.Button{
+        x = 0,
+        y = 16,
+        w = 32,
+        h = 32,
+        text = "⛭",
         onReleased = function(self)
-            widgets:add(Widgets.Window({
+            self.parent_widget:add(Widgets.Window({
                 x = 16,
                 y = 48,
-                title = "Window " .. #widgets.__subwidgets - 1,
+                title = "Window " .. #self.parent_widget.__subwidgets - 1,
                 arrange_mode = "horizontal",
             },
 			{
@@ -59,13 +68,12 @@ function love.load()
             }))
         end
     })
-    widgets:add(Widgets.Button{
-        x = 48,
-        y = 0,
-        w = 48,
-        h = 48,
-        text = "Rearrange",
-        rearrange_exempt = true,
+    main_window:add(Widgets.Button{
+        x = 32,
+        y = 16,
+        w = 32,
+        h = 32,
+        text = "♻",
         onReleased = function(self)
             self.parent_widget:rearrangeSubwidgets()
         end
@@ -85,5 +93,6 @@ function love.mousepressed(x, y, button, istouch, presses)
 end
 
 function love.mousereleased(x, y, button, istouch, presses)
+    --print("love mousereleased", x, y)
     widgets:mousereleased(x, y, button, istouch, presses)
 end

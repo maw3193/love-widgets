@@ -8,8 +8,8 @@ This repo is for fiddling around with love2d to put together various gui element
 
 Todo items
 ---
-
 * Stop widgetcontainers from overspilling outside their extent with stencils
+* Once you've pressed inside a widgetcontainer, clamp the cursor until you release
 * Should the last-interacted-with window be brought to the top?
 * Text boxes/text input?
 * Passing keyboard input to windows?

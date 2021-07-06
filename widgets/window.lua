@@ -80,7 +80,7 @@ function Window.Window(obj, subwidgets)
     obj.close_button = Button.Button{
         y = 0,
         rearrange_exempt = true,
-        text = "X",
+        text = "☒",
         onReleased = function(self)
             self.parent_widget:kill()
         end,

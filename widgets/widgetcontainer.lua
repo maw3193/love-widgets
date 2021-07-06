@@ -99,11 +99,12 @@ function WidgetContainer.mousepressed(self, x, y, button, istouch, presses)
 end
 
 function WidgetContainer.mousereleased(self, x, y, button, istouch, presses)
+    --print(self.__name, "mousereleased", x, y)
     if self:isPointInside(x, y) then
         local subx = x - self.x
         local suby = y - self.y
         if self.__mousereleased_override then
-            self:__mousereleased_override(x, y, button, istouch, presses)
+            self:__mousereleased_override(subx, suby, button, istouch, presses)
         else
             for widget in self:reverseSubwidgets() do
                 if widget:isPointInside(subx, suby) and widget.mousereleased then
@@ -117,6 +118,7 @@ end
 
 function WidgetContainer.rearrangeSubwidgets(self)
     --print("Widget Container padding:", self.top_pad, self.left_pad, self.right_pad, self.bottom_pad)
+    --print(self.__name, self.arrange_mode)
     if self.arrange_mode == WidgetArrangeMode.HORIZONTAL then
         local px = self.left_pad
         local py = self.top_pad
