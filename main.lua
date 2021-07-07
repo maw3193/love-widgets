@@ -85,6 +85,8 @@ function love.update(dt)
 end
 
 function love.draw()
+    love.graphics.stencil(function() end) -- reset the stencil
+    love.graphics.setStencilTest()
     widgets:preDraw()
     widgets:draw()
     widgets:postDraw()

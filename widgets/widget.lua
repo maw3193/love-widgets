@@ -29,9 +29,26 @@ end
 function Widget.preDraw(self)
     love.graphics.push()
     love.graphics.translate(self.x, self.y)
+    if self.use_stencil then
+        love.graphics.stencil(function()
+                love.graphics.rectangle("fill", 0, 0, self.w, self.h)
+            end,
+            "increment",
+            1,
+            true)
+        love.graphics.setStencilTest("equal", self:getStencilDepth())
+    end
 end
 
 function Widget.postDraw(self)
+    if self.use_stencil then
+        love.graphics.stencil(function()
+                love.graphics.rectangle("fill", 0, 0, self.w, self.h)
+            end,
+            "decrement",
+            1,
+            true)
+    end
     love.graphics.pop()
 end
 
@@ -44,6 +61,19 @@ function Widget.getScreenPosition(self)
     x = x + self.x
     y = y + self.y
     return x, y
+end
+
+function Widget.getStencilDepth(self)
+    local depth
+    if self.use_stencil then
+        depth = 1
+    else
+        depth = 0
+    end
+    if self.parent_widget then
+        depth = depth + self.parent_widget:getStencilDepth()
+    end
+    return depth
 end
 
 return Widget

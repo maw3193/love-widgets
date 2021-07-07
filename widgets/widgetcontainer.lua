@@ -1,6 +1,6 @@
 -- vim: set et hlsearch ts=4 sts=4 sw=4:
 
-local widget = require("widgets/widget")
+local Widget = require("widgets/widget")
 
 local WidgetArrangeMode = {
     HORIZONTAL = "horizontal",
@@ -25,7 +25,7 @@ local WidgetContainer = {
     arrange_mode = WidgetArrangeMode.NONE,
 }
 
-setmetatable(WidgetContainer, widget)
+setmetatable(WidgetContainer, Widget)
 
 function WidgetContainer.__index(table, key)
     return WidgetContainer[key] or (getmetatable(WidgetContainer) or {})[key]
