@@ -8,10 +8,6 @@ This repo is for fiddling around with love2d to put together various gui element
 
 Todo items
 ---
-* Stop widgetcontainers from overspilling outside their extent with stencils
-  - It works, somewhat
-  - Dunno how well non-stencil widgetcontainers work.
-  - **BUT, I can't use the resize button with my stencils currently**
 * Once you've pressed inside a widgetcontainer, clamp the cursor until you release
   - BUT NOT FOR RESIZE BUTTON
 * Should the last-interacted-with window be brought to the top?

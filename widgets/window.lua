@@ -34,6 +34,8 @@ function Window.draw(self)
         local mouseX, mouseY = love.mouse.getPosition()
         local screenX, screenY = self:getScreenPosition()
         -- because of love.graphics.translate, the mouse position is not useful coords to draw yet.
+        -- ghost rectangle is drawn inside the containing widget, not the window itself
+        love.graphics.setStencilTest("gequal", self.parent_widget:getStencilDepth())
         love.graphics.setColor(self.line)
         love.graphics.rectangle("line", 0, 0, mouseX - screenX + self.resize_offset_x, mouseY - screenY + self.resize_offset_y)
     end
