@@ -26,6 +26,10 @@ function Widget.resize(self, width, height)
     self.h = height
 end
 
+function Widget.setStencilTest(self)
+        love.graphics.setStencilTest("equal", self:getStencilDepth())
+end
+
 function Widget.preDraw(self)
     love.graphics.push()
     love.graphics.translate(self.x, self.y)
@@ -36,8 +40,8 @@ function Widget.preDraw(self)
             "increment",
             1,
             true)
-        love.graphics.setStencilTest("equal", self:getStencilDepth())
     end
+    self:setStencilTest()
 end
 
 function Widget.postDraw(self)

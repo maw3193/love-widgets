@@ -71,16 +71,17 @@ function WidgetContainer.draw(self)
         love.graphics.setColor(self.fill)
         love.graphics.rectangle("fill", 0, 0, self.w, self.h)
     end
-    if self.line then
-        love.graphics.setColor(self.line)
-        love.graphics.rectangle("line", 0, 0, self.w, self.h)
-    end
     for widget in self:subwidgets() do
         if widget.draw then
             widget:preDraw()
             widget:draw()
             widget:postDraw()
         end
+    end
+    self:setStencilTest()
+    if self.line then
+        love.graphics.setColor(self.line)
+        love.graphics.rectangle("line", 0, 0, self.w, self.h)
     end
 end
 

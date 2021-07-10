@@ -12,7 +12,6 @@ local Button = require("widgets/button")
 local Window = {
     __name = "Window",
     __theme = Theme.window,
-    grabbed = false,
     grab_offset_x = nil,
     grab_offset_y = nil,
     title = nil, -- the name of the window
@@ -41,7 +40,7 @@ function Window.draw(self)
 end
 
 function Window.update(self, dt)
-    if self.grabbed then
+    if self.title_bar.pressed then
         local posx,posy = love.mouse.getPosition()
         self.x = posx - self.grab_offset_x
         self.y = posy - self.grab_offset_y
@@ -80,10 +79,6 @@ function Window.Window(obj, subwidgets)
             local posx,posy = love.mouse.getPosition()
             self.parent_widget.grab_offset_x = posx - self.parent_widget.x
             self.parent_widget.grab_offset_y = posy - self.parent_widget.y
-            self.parent_widget.grabbed = true
-        end,
-        onReleased = function(self)
-            self.parent_widget.grabbed = false
         end,
     }
     obj.title_bar.fill = obj.title_bar.pressed_fill
