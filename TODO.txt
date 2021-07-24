@@ -5,11 +5,18 @@ Purpose
 ---
 
 This repo is for fiddling around with love2d to put together various gui elements to be used with other projects.
+The ultimate driver is a vague idea of a top-down sandbox RPG with settlement management.
 
 Todo items
 ---
-* Once you've pressed inside a widgetcontainer, clamp the cursor until you release
-  - BUT NOT FOR RESIZE BUTTON
+* Probably simpler to have windows with an inner widgetcontainer.
+  - **TURNS OUT NOT**, I have stencilling problems, I think
+* An inventory
+  - defines items, shows them in a list.
+  - Need to be able to take a table, generate a list of widgets from that, and display those.
+  - Must be able to handle having more items than the window can display.
 * Should the last-interacted-with window be brought to the top?
 * Text boxes/text input?
 * Passing keyboard input to windows?
+* Once you've pressed inside a widgetcontainer, clamp the cursor until you release
+  - BUT NOT FOR RESIZE BUTTON
